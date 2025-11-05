@@ -1,0 +1,15 @@
+{
+  "paper": {
+    "format": "A4",
+    "orientation": "landscape",
+    "cardsPerRow": 4,
+    "cardsPerCol": 4
+  },
+  "card": {
+    "fontSize": "20px",
+    "padding": "0.8em",
+    "showBorder": true,
+    "skipQuestionOnBack": true,
+    "reverseOrderOnBack": true
+  }
+}

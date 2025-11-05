@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<style>
+${style}
+</style></head>
+<body>
+${content}
+<script>
+(function() {
+if(document.body.innerText.includes('\(') || document.body.innerText.includes('\[')) {
+    document.write('<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"><\/script>');
+    window.MathJax = {
+        options: {
+            enableMenu: false,
+        }
+    };
+}
+})();
+</script>
+</body>
+</html>

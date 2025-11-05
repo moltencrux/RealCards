@@ -1,0 +1,46 @@
+@page {
+    size: ${papersize} ${orientation};
+    margin: 0
+}
+@media print {
+    @page {size: ${papersize} ${orientation}; margin: 0};
+}
+html, body, .pageA, .pageB {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+}
+body {
+    font-size: ${fontSize};
+    font-family: Arial, Liberation Sans, sans;
+}
+.pageA, .pageB {
+    display: flex;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    page-break-after:always;
+}
+.pageB {
+    flex-direction: ${flexDirection};
+}
+.cardA, .cardB {
+    box-sizing: border-box;
+    overflow: hidden;
+    width: ${cardWidth};
+    height: ${cardHeight};
+    padding: ${cardPadding};
+}
+.cardA {
+    border-bottom: dashed ${borderWidth}px grey;
+    border-right: dashed ${borderWidth}px grey;
+}
+img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+/* ---- AUDIO CLEAN-UP (stronger selector) ---- */
+.playImage, .replay-button, .soundLink { display: none !important; }
+
+/* HIDE ANYTHING MARKED noPrint */
+.noPrint { display: none !important; }
