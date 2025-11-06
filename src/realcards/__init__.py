@@ -30,24 +30,6 @@ from anki.collection import NoteIdsLimit
 from anki.cards import Card
 from anki.utils import ids2str
 
-# ----------------------------------------------------------------------
-# CONFIG
-# ----------------------------------------------------------------------
-DEFAULT_CONFIG = {
-    "paper": {
-        "format": "A4",
-        "orientation": "portrait",
-        "cardsPerRow": 3,
-        "cardsPerCol": 6
-    },
-    "card": {
-        "fontSize": "12pt",
-        "padding": "0.8em",
-        "showBorder": True,
-        "reverseOrderOnBack": False,
-        "skipQuestionOnBack": True
-    }
-}
 
 # ----------------------------------------------------------------------
 class RealCardsExporterBase (Exporter):
@@ -116,17 +98,9 @@ class RealCardsRunner:
         self.cards = cards or []
         self.is_pdf = is_pdf
         self.include_media = include_media
-        self.config = self._load_config()
+        self.config = mw.addonManager.getConfig(__name__)  # ← AUTO-MERGED
         self.media_dir = Path(col.media.dir())
         self.templates_dir = Path(__file__).parent / "templates"
-
-    def _load_config(self):
-        cfg = mw.addonManager.getConfig(__name__)
-        for k, v in DEFAULT_CONFIG["paper"].items():
-            cfg["paper"].setdefault(k, v)
-        for k, v in DEFAULT_CONFIG["card"].items():
-            cfg["card"].setdefault(k, v)
-        return cfg
 
     def _render_question(self, card: Card) -> str:
         output = card.render_output(True, True)  # reload=True, browser=True

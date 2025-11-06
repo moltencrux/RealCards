@@ -1,0 +1,19 @@
+
+{
+  "display_name": "RealCards - Export selected cards to printable HTML/PDF",
+  "module_name": "realcards",
+  "repo_name": "realcards",
+  "author": "moltencrux",
+  "ankiweb_id": "1996922060",
+  "contact": "https://github.com/moltencrux/RealCards/issues",
+  "homepage": "https://github.com/moltencrux/RealCards",
+  "tags": "print paper cards papercards export pdf html",
+  "copyright_start": 2025,
+  "conflicts": [],
+  "targets": [],
+  "min_anki_version": "25.09",
+  "tested_anki_version": "25.09.2",
+  "ankiweb_conflicts_with_local": true,
+  "local_conflicts_with_ankiweb": true,
+  "qt_resource_migration_mode": "disabled"
+}
