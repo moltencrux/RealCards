@@ -22,9 +22,37 @@ Currently, this is an initial relase, so there will certainly be bugs. Please be
 
 ## Installation
 
-1. Download from [AnkiWeb](#) (coming soon) or GitHub
-2. Install in Anki → Tools → Add-ons → Import
-3. Restart Anki
+- Via Ankiweb
+    
+    1. (From Anki) -> Tools -> Add-ons -> Get Add-ons
+    2. Enter code 1996922060
+    3. Restart Anki
+
+- Manual install
+
+    1. `git clone https://github.com/moltencrux/RealCards`
+    2. `cd RealCards`
+
+    3. Recursively copy src/realcards to your Anki addon folder
+
+        Linux (non-flatpak):
+        ```sh
+        cp -r src/realcards/ ~/.local/share/Anki2/addons21/addons21/
+        ```
+        Linux (flatpak):
+        ```sh
+        cp -rT src/realcards/ ~/.var/app/ ~/.var/app/net.ankiweb.Anki/data/Anki2/addons21/
+        ```
+        Windows
+        ```cmd
+        mkdir "%APPDATA%\Anki2\addons21\realcards" 2>nul && xcopy "src\realcards\*.*" "%APPDATA%\Anki2\addons21\realcards\" /E /Y /I
+        ```
+        MacOS
+        ```sh
+        mkdir -p ~/Library/Application\ Support/Anki2/addons21/realcards && cp -r src/realcards/* ~/Library/Application\ Support/Anki2/addons21/realcards
+        ```
+
+    4. Restart Anki
 
 ---
 
