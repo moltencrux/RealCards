@@ -6,8 +6,9 @@
     "cardsPerCol": 4
   },
   "card": {
-    "fontSize": "20px",
-    "padding": "0.8em",
+    "fontSize": "20",
+    "minFontSize": "8",
+    "padding": "1.0%",
     "showBorder": true,
     "skipQuestionOnBack": true,
     "reverseOrderOnBack": true
