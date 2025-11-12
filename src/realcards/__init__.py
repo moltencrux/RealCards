@@ -21,7 +21,7 @@ from itertools import batched
 from aqt import mw, gui_hooks
 from aqt.qt import (
     QWebEngineView, QWebEnginePage, QEventLoop, QTimer, Qt, QUrl,
-    QFileDialog, QAction
+    QFileDialog, QAction, QPageSize
 )
 from aqt.utils import showInfo, showCritical, openLink
 from aqt.import_export.exporting import Exporter, ExportOptions
@@ -32,7 +32,7 @@ from anki.utils import ids2str
 
 
 # ----------------------------------------------------------------------
-class RealCardsExporterBase (Exporter):
+class RealCardsExporterBase(Exporter):
     key = "realcards_html"
     extension = "html"
     show_deck_list = True
@@ -144,9 +144,21 @@ class RealCardsRunner:
         return f'{prefix}data:image/{ext};base64,{b64}{suffix}'
 
     def _css(self) -> str:
+        paper_format = self.config["paper"]["format"]
+        orientation = self.config["paper"]["orientation"].lower()
+        page_size_id = find_pagesize_id(paper_format)
+        page_size = QPageSize(page_size_id).size(QPageSize.Unit.Millimeter)
+        page_width = page_size.width()
+        page_height = page_size.height()
+
+        if orientation == 'landscape':
+            page_width, page_height = page_height, page_width
+
         settings = {
-            "papersize": self.config["paper"]["format"],
-            "orientation": self.config["paper"]["orientation"],
+            "paperSize": paper_format,
+            "pageWidth": page_width,
+            "pageHeight": page_height,
+            "orientation": orientation,
             "cardWidth": f"{100 / self.config['paper']['cardsPerRow']:.3f}%",
             "cardHeight": f"{100 / self.config['paper']['cardsPerCol']:.3f}%",
             "fontSize": self.config["card"]["fontSize"],
@@ -191,7 +203,13 @@ class RealCardsRunner:
         content = self._layout(self.cards)
         css = self._css()
         page_tpl = (self.templates_dir / "page.html").read_text()
-        full_html = Template(page_tpl).substitute({"style": css, "content": content})
+        settings = {
+            "fontSize": self.config["card"]["fontSize"],
+            "minFontSize": self.config["card"]["minFontSize"],
+            "style": css,
+            "content": content
+        }
+        full_html = Template(page_tpl).safe_substitute(settings)
 
         if self.is_pdf:
             self._render_to_pdf(full_html, path)
@@ -247,6 +265,23 @@ class RealCardsRunner:
         if not success:
             output_path.unlink(missing_ok=True)
             raise RuntimeError("PDF rendering failed")
+
+def find_pagesize_id(user_str: str) -> QPageSize.PageSizeId:
+    s = user_str.strip().lower()
+    # 1) Try matching enum member names
+    for member in QPageSize.PageSizeId:
+        if member.name.lower() == s:
+            return member
+    # 2) Try matching the key() (machine key) and name() (localized)
+    for member in QPageSize.PageSizeId:
+        if QPageSize.key(member).lower() == s or QPageSize.name(member).lower() == s:
+            return member
+    # 3) Fuzzy fallback: remove non-alnum and compare
+    norm = re.sub(r'[^a-z0-9]', '', s)
+    for member in QPageSize.PageSizeId:
+        if re.sub(r'[^a-z0-9]', '', member.name.lower()) == norm:
+            return member
+    raise ValueError(f"No QPageSize.PageSizeId found for '{user_str}'")
 
 
 # ----------------------------------------------------------------------

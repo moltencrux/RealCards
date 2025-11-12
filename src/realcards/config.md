@@ -3,7 +3,9 @@
 ### Section: card
 This is for card-related settings.
 
-- `fontSize` — **Base font size** of the card: `12px`.
+- `fontSize` — **Base font size in px** of the card: `12`.
+
+- `minFontSize` — **Minimum font size in px** for cards with content overflows: `12`.
 
 - `padding` — Padding of the card: `0.8em`. Can be set to `0` to have no space between cards.
 

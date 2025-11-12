@@ -1,11 +1,13 @@
 @page {
-    size: ${papersize} ${orientation};
-    margin: 0
+    size: ${paperSize} ${orientation};
+    margin: 0;
 }
-@media print {
-    @page {size: ${papersize} ${orientation}; margin: 0};
+html, body {
+    height: ${pageHeight}mm;
+    width: ${pageWidth}mm;
+    margin: 0;
 }
-html, body, .pageA, .pageB {
+.pageA, .pageB { /*do not combine html body selector here!*/ 
     height: 100%;
     width: 100%;
     margin: 0;
@@ -39,8 +41,10 @@ img {
     max-height: 100%;
 }
 
-/* ---- AUDIO CLEAN-UP (stronger selector) ---- */
-.playImage, .replay-button, .soundLink { display: none !important; }
-
-/* HIDE ANYTHING MARKED noPrint */
-.noPrint { display: none !important; }
+.playImage, .replay-button, .soundLink, .noPrint {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+}

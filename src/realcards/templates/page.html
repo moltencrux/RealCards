@@ -7,6 +7,43 @@ ${style}
 <body>
 ${content}
 <script>
+// document.documentElement.classList.add('print-mode');
+
+const CONFIG = {
+    fontSize: ${fontSize},
+    minFontSize: 4
+};
+
+document.querySelectorAll('.cardA, .cardB').forEach(el => {
+    let fontSize = CONFIG.minFontSize;
+    //el.style.fontSize = fontSize + 'px';
+    el.style.lineHeight = '1.2';
+    
+    // void el.offsetHeight;  // force reflow
+
+    let low=CONFIG.minFontSize, high=CONFIG.fontSize;
+    while (low <= high) {
+        let mid = Math.floor((low+high)/2);
+        el.style.fontSize = mid+'px';
+        void el.offsetHeight;
+        if(el.scrollWidth>el.clientWidth || el.scrollHeight>el.clientHeight) {
+            high = mid-1;
+        }
+        else {
+            fontSize = mid // best underfull size
+            low = mid+1;
+        }
+    }
+    el.style.fontSize = fontSize + 'px';
+    void el.offsetHeight;
+
+    // FINAL REFLOW — fixes QtWebEngine whitespace bug
+    // el.style.display = 'none';
+    // void el.offsetHeight;
+    // el.style.display = 'flex';
+
+});
+
 (function() {
 if(document.body.innerText.includes('\(') || document.body.innerText.includes('\[')) {
     document.write('<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"><\/script>');
